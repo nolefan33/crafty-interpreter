@@ -13,7 +13,7 @@ Just needs gcc, which you probably already have.
 
 #### Kotlin/Native
 I decided to write some of the C parts in Kotlin as well and compile them with the Kotlin/Native compiler. Mostly I'm just curious where the annoyances show up but also in how it performs compared to the C implementation. Currently it's a bit of a headache to get it installed next to the regular Kotlin compiler, here's what I had to do.
-1. Install Xcode and the Xcode command line tools. I used this guide, because also the latest version of Xcode isn't compatible with Catalina https://www.freecodecamp.org/news/how-to-download-and-install-xcode/.
+1. Install Xcode. We need the command line tools and it seems those just come bundled with Xcode now?
 2. If you have `kotlinc` installed, delete it. For now, the kotlin native installer installs a version which conflicts.
     ```
     brew uninstall kotlin
