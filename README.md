@@ -6,7 +6,9 @@ Code for Crafting Interpreters.
 Generally each folder containing code will have a Makefile that will build (and perhaps run) the project. Any needed tools to run these files is explained here, for Mac anyway.
 #### Java/Kotlin
 I chose to use Kotlin for the Java parts of the book. You'll need the kotlin compiler (kotlinc) and a jre installed to run the jars it generates. Using brew to install the kotlin compiler should be enough to get both of those.
-```brew install kotlin```
+```
+brew install kotlin
+```
 
 #### C
 Just needs gcc, which you probably already have.
@@ -27,3 +29,8 @@ I decided to write some of the C parts in Kotlin as well and compile them with t
     rm /usr/local/bin/kotlinc
     brew install kotlin
     ```
+You should be ready to `make` now! The only other thing I ran into was some code sign issues with the libs kotlin-native uses. Specifically, with `libllvmstubs.dylib`. To fix this, I ran `make` the first time to get the compiler to download the extra stuff it needed, then I ran the following.
+```
+find /usr/local -name libllvmstubs.dylib
+sudo xattr -d <path to lib>
+```
