@@ -6,7 +6,7 @@ data class Token(
     val literal: Any?,
     val line: Int
 ) {
-    override fun toString() = "$type $literal"
+    override fun toString() = if (type == TokenType.IDENTIFIER) "$type $lexeme" else "$type ${literal ?: ""}"
 }
 
 enum class TokenType {
