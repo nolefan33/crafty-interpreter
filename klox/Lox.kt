@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
     }
 }
 
-private object Lox {
+object Lox {
     var hadError = false
         private set
 
