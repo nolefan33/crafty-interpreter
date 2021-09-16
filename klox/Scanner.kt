@@ -91,6 +91,11 @@ class Scanner(private val source: String) {
             while (peek() != '\n' && !isAtEnd()) advance()
         } else {
             while (!(peek() == '*' && peekNext() == '/') && !isAtEnd()) {
+                if (peek() == '/' && peekNext() == '*') {
+                    advance()
+                    advance()
+                    scanComment(blockComment = true)
+                }
                 val c = advance()
                 if (c == '\n') line++
             }
