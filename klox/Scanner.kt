@@ -55,7 +55,8 @@ class Scanner(private val source: String) {
             '=' -> addToken(if (matchNext('=')) TokenType.EQUAL_EQUAL else TokenType.EQUAL)
             '<' -> addToken(if (matchNext('=')) TokenType.LESS_EQUAL else TokenType.LESS)
             '>' -> addToken(if (matchNext('=')) TokenType.GREATER_EQUAL else TokenType.GREATER)
-            '/' -> if (matchNext('/')) while (peek() != '\n' && !isAtEnd()) advance()
+            '/' -> if (matchNext('/')) scanComment(blockComment = false)
+                   else if (matchNext('*')) scanComment(blockComment = true)
                    else addToken(TokenType.SLASH)
             ' ', '\r', '\t' -> { /* ignore whitespace */ }
             '\n' -> line++
@@ -84,6 +85,19 @@ class Scanner(private val source: String) {
     private fun isDigit(c: Char) = c >= '0' && c <= '9'
     private fun isAlpha(c: Char) = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
     private fun isAlphaNumeric(c: Char) = isDigit(c) || isAlpha(c)
+
+    private fun scanComment(blockComment: Boolean) {
+        if (!blockComment) {
+            while (peek() != '\n' && !isAtEnd()) advance()
+        } else {
+            while (!(peek() == '*' && peekNext() == '/') && !isAtEnd()) {
+                val c = advance()
+                if (c == '\n') line++
+            }
+            if (!isAtEnd()) advance()
+            if (!isAtEnd()) advance()
+        }
+    }
 
     private fun scanString() {
         while (peek() != '"' && !isAtEnd()) {
