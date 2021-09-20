@@ -1,3 +1,5 @@
-fun main(args: Array<String>) {
-    sayHello()
+package com.craftyinterpreter.chap1
+
+fun main() {
+    Speaker.sayHello()
 }

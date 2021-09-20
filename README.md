@@ -2,18 +2,18 @@
 
 Code for Crafting Interpreters.
 
-### Requirements
+## Requirements
 Generally each folder containing code will have a Makefile that will build (and perhaps run) the project. Any needed tools to run these files is explained here, for Mac anyway.
-#### Java/Kotlin
+### Java/Kotlin
 I chose to use Kotlin for the Java parts of the book. You'll need the kotlin compiler (kotlinc) and a jre installed to run the jars it generates. Using brew to install the kotlin compiler should be enough to get both of those.
 ```
 brew install kotlin
 ```
 
-#### C
+### C
 Just needs gcc, which you probably already have.
 
-#### Kotlin/Native
+### Kotlin/Native
 I decided to write some of the C parts in Kotlin as well and compile them with the Kotlin/Native compiler. Mostly I'm just curious where the annoyances show up but also in how it performs compared to the C implementation. Currently it's a bit of a headache to get it installed next to the regular Kotlin compiler, here's what I had to do.
 1. Install Xcode. We need the command line tools and it seems those just come bundled with Xcode now?
 2. If you have `kotlinc` installed, delete it. For now, the kotlin native installer installs a version which conflicts.
@@ -34,3 +34,16 @@ You should be ready to `make` now! The only other thing I ran into was some code
 find /usr/local -name libllvmstubs.dylib
 sudo xattr -d <path to lib>
 ```
+
+## Kotlin Interpreter
+This is the interpreter built during section 2 of the book. It's all inside the `klox` folder.
+
+### Building
+There's a Makefile in here too, a simple `make` will build the interpreter. Make sure you've followed the requirements section for setting up Kotlin.
+
+### Running
+There's a make task for running the interpreter in REPL mode, `make repl`. I have not added a task for running a file yet. For now, you would need to build the interpreter (artifact is klox.jar at the top level of the klox folder) and then run it with the command `java --jar klox.jar <filename>`.
+
+### Additions
+This is a list of things I've added in addition to the book's described behavior (at least until it starts screwing things up, then i may remove them).
+- Multiline block comments (begin: `/*`, end: `*/`). Plus they can be nested if you want. 
