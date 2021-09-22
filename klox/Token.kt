@@ -1,4 +1,4 @@
-package com.craftyinterpreter.lox
+package com.craftyinterpreter.klox
 
 data class Token(
     val type: TokenType,

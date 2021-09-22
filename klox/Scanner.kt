@@ -1,4 +1,4 @@
-package com.craftyinterpreter.lox
+package com.craftyinterpreter.klox
 
 class Scanner(private val source: String) {
     companion object {

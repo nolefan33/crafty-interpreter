@@ -38,7 +38,7 @@ private fun defineAst(outputDir: String, baseName: String, types: List<String>) 
             """
             |data class $className(
             |    $fields
-            |) : $baseName {}
+            |) : $baseName
             """.trimMargin("|")
         }
         writer.println(typeStrings)

@@ -1,4 +1,4 @@
-package com.craftyinterpreter.lox
+package com.craftyinterpreter.klox
 
 import java.nio.file.Files
 import java.nio.file.Paths
