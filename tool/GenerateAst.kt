@@ -13,7 +13,7 @@ fun main(args: Array<String>) {
     defineAst(outputDir, "Expr", listOf(
         "Binary   : Expr left, Token operator, Expr right",
         "Grouping : Expr expression",
-        "Literal  : Any value",
+        "Literal  : Any? value",
         "Unary    : Token operator, Expr right"
     ))
 }
@@ -23,7 +23,13 @@ private fun defineAst(outputDir: String, baseName: String, types: List<String>) 
     PrintWriter(path, "UTF-8").use { writer ->
         writer.println("package com.craftyinterpreter.klox")
         writer.println()
-        writer.println("interface Expr { }")
+
+        writer.println("sealed interface Expr {")
+
+        defineVisitor(writer, baseName, types)
+        writer.println("\tfun <R> accept(visitor: Visitor<R>): R");
+        
+        writer.println("}")
         writer.println()
 
         val typeStrings = types.joinToString("\n\n") { type ->
@@ -38,9 +44,22 @@ private fun defineAst(outputDir: String, baseName: String, types: List<String>) 
             """
             |data class $className(
             |    $fields
-            |) : $baseName
+            |) : $baseName {
+            |    override fun <R> accept(visitor: Expr.Visitor<R>): R = visitor.visit${className}${baseName}(this)
+            |}
             """.trimMargin("|")
         }
         writer.println(typeStrings)
     }
+}
+
+private fun defineVisitor(writer: PrintWriter, baseName: String, types: List<String>) {
+    writer.println("\tinterface Visitor<R> {");
+
+    types.forEach() { type ->
+        val typeName = type.split(":")[0].trim()
+        writer.println("\t\tfun visit${typeName}${baseName}(${baseName.toLowerCase()}: $typeName): R")
+    }
+
+    writer.println("\t}\n");
 }
