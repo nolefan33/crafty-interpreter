@@ -39,10 +39,11 @@ sudo xattr -d <path to lib>
 This is the interpreter built during section 2 of the book. It's all inside the `klox` folder.
 
 ### Building
-There's a Makefile in here too, a simple `make` will build the interpreter. Make sure you've followed the requirements section for setting up Kotlin.
+There's a Makefile in here too, a simple `make build` will build the interpreter. Make sure you've followed the requirements section for setting up Kotlin.
 
 ### Running
-There's a make task for running the interpreter in REPL mode, `make repl`. I have not added a task for running a file yet. For now, you would need to build the interpreter (artifact is klox.jar at the top level of the klox folder) and then run it with the command `java --jar klox.jar <filename>`.
+There's a make task for running the interpreter in REPL mode, `make repl`.
+There's also a task for running a file (this is the default task). Run a file with `make IN_FILE=<file>`.
 
 ### Additions
 This is a list of things I've added in addition to the book's described behavior (at least until it starts screwing things up, then i may remove them).
