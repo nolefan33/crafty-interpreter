@@ -17,13 +17,18 @@ fun main(args: Array<String>) {
 object Lox {
     var hadError = false
         private set
+    var hadRuntimeError = false
+        private set
+
+    private val interpreter = Interpreter()
 
     fun runFile(path: String) {
         val fileBytes = Files.readAllBytes(Paths.get(path))
         runProgram(String(fileBytes, Charset.defaultCharset()))
         
         // Indicate an error in the exit code.
-        if (hadError) System.exit(65);
+        if (hadError) System.exit(65)
+        if (hadRuntimeError) System.exit(70)
     }
 
     fun runPrompt() {
@@ -34,6 +39,11 @@ object Lox {
             hadError = false;
         }
     }
+
+    fun runtimeError(error: RuntimeError) {
+        System.err.println("${error.message}\n[line ${error.token.line}]")
+        hadRuntimeError = true
+      }
 
     fun error(line: Int, message: String) = report(line, "", message)
 
@@ -50,7 +60,7 @@ object Lox {
         // Stop if there was a syntax error.
         if (hadError) return
 
-        println(AstPrinter().print(expression))
+        interpreter.interpret(expression)
     }
 
     private fun report(line: Int, where: String, message: String) {
