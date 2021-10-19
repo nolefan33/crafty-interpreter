@@ -33,10 +33,11 @@ class Interpreter : Expr.Visitor<Any?> {
             GREATER_EQUAL -> safePerformNumberOperation(expr.operator, lVal, rVal, Double::greaterThanOrEqual)
             LESS_EQUAL -> safePerformNumberOperation(expr.operator, lVal, rVal, Double::lessThanOrEqual)
             MINUS -> safePerformNumberOperation(expr.operator, lVal, rVal, Double::minus)
-            PLUS -> when (lVal) {
-                is Double -> safePerformNumberOperation(expr.operator, lVal, rVal, Double::plus)
-                is String -> lVal + stringify(rVal) // TODO implicitly convert right side of concatenation to string, is that what we want?
-                else      -> throw RuntimeError(expr.operator, "Operands must be two numbers or left value must be a string.")
+            PLUS -> when {
+                lVal is String -> lVal + stringify(rVal)
+                rVal is String -> stringify(lVal) + rVal
+                lVal is Double -> safePerformNumberOperation(expr.operator, lVal, rVal, Double::plus)
+                else -> throw RuntimeError(expr.operator, "Operands must be two numbers or one value must be a string.")
             }
             SLASH -> safePerformNumberOperation(expr.operator, lVal, rVal, Double::div)
             STAR -> safePerformNumberOperation(expr.operator, lVal, rVal, Double::times)
