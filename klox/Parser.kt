@@ -5,10 +5,31 @@ import com.craftyinterpreter.klox.TokenType.*
 class Parser(private val tokens: List<Token>) {
     private var current = 0
 
-    fun parse(): Expr? = try {
-        expression()
-    } catch (_: ParseError) {
-        null
+    fun parse(): List<Stmt> {
+        val statements = mutableListOf<Stmt>()
+        
+        while (!isAtEnd()) {
+            statements.add(statement())
+        }
+    
+        return statements
+    }
+
+    private fun statement(): Stmt = when {
+        match(PRINT) -> printStatement()
+        else -> expressionStatement()
+    }
+
+    private fun printStatement(): Stmt {
+        val value = expression()
+        consume(SEMICOLON, "Expect ';' after value.")
+        return Print(value)
+    }
+
+    private fun expressionStatement(): Stmt {
+        val expr = expression()
+        consume(SEMICOLON, "Expect ';' after expression.")
+        return Expression(expr)
     }
 
     private fun expression() = equality()
