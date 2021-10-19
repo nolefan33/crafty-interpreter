@@ -29,7 +29,7 @@ private fun defineAst(outputDir: String, baseName: String, types: List<String>) 
         writer.println("package com.craftyinterpreter.klox")
         writer.println()
 
-        writer.println("sealed interface Expr {")
+        writer.println("sealed interface $baseName {")
 
         defineVisitor(writer, baseName, types)
         writer.println("\tfun <R> accept(visitor: Visitor<R>): R");
@@ -50,7 +50,7 @@ private fun defineAst(outputDir: String, baseName: String, types: List<String>) 
             |data class $className(
             |    $fields
             |) : $baseName {
-            |    override fun <R> accept(visitor: Expr.Visitor<R>): R = visitor.visit${className}${baseName}(this)
+            |    override fun <R> accept(visitor: $baseName.Visitor<R>): R = visitor.visit${className}${baseName}(this)
             |}
             """.trimMargin("|")
         }

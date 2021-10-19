@@ -1,6 +1,6 @@
 package com.craftyinterpreter.klox
 
-sealed interface Expr {
+sealed interface Stmt {
 	interface Visitor<R> {
 		fun visitExpressionStmt(stmt: Expression): R
 		fun visitPrintStmt(stmt: Print): R
@@ -12,11 +12,11 @@ sealed interface Expr {
 data class Expression(
     val expression: Expr
 ) : Stmt {
-    override fun <R> accept(visitor: Expr.Visitor<R>): R = visitor.visitExpressionStmt(this)
+    override fun <R> accept(visitor: Stmt.Visitor<R>): R = visitor.visitExpressionStmt(this)
 }
 
 data class Print(
     val expression: Expr
 ) : Stmt {
-    override fun <R> accept(visitor: Expr.Visitor<R>): R = visitor.visitPrintStmt(this)
+    override fun <R> accept(visitor: Stmt.Visitor<R>): R = visitor.visitPrintStmt(this)
 }
