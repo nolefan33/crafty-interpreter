@@ -2,12 +2,24 @@ package com.craftyinterpreter.klox
 
 import com.craftyinterpreter.klox.TokenType.*
 
-class Interpreter : Expr.Visitor<Any?> {
-    fun interpret(expression: Expr) = try {
-        val value = evaluate(expression)
-        println(stringify(value))
+class Interpreter : Expr.Visitor<Any?>, Stmt.Visitor<Unit> {
+    fun interpret(program: List<Stmt>) = try {
+        program.forEach { statement ->
+            execute(statement)
+        }
     } catch (error: RuntimeError) {
         Lox.runtimeError(error)
+    }
+
+    private fun execute(stmt: Stmt) = stmt.accept(this)
+
+    override fun visitExpressionStmt(stmt: Expression): Unit {
+        evaluate(stmt.expression)
+    }
+
+    override fun visitPrintStmt(stmt: Print): Unit {
+        val value = evaluate(stmt.expression)
+        println(stringify(value))
     }
 
     override fun visitLiteralExpr(expr: Literal): Any? = expr.value
