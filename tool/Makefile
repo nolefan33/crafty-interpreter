@@ -10,5 +10,5 @@ gen_ast: build_ast
 ifdef OUT_DIR
 	@java -jar gen_ast.jar $(OUT_DIR)
 else
-	@echo 'usage: make OUT_DIR="<dir>" gen_ast'
+	@java -jar gen_ast.jar ../klox
 endif
