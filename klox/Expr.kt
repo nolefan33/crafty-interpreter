@@ -6,6 +6,7 @@ sealed interface Expr {
 		fun visitGroupingExpr(expr: Grouping): R
 		fun visitLiteralExpr(expr: Literal): R
 		fun visitUnaryExpr(expr: Unary): R
+		fun visitVariableExpr(expr: Variable): R
 	}
 
 	fun <R> accept(visitor: Visitor<R>): R
@@ -36,4 +37,10 @@ data class Unary(
     val right: Expr
 ) : Expr {
     override fun <R> accept(visitor: Expr.Visitor<R>): R = visitor.visitUnaryExpr(this)
+}
+
+data class Variable(
+    val name: Token
+) : Expr {
+    override fun <R> accept(visitor: Expr.Visitor<R>): R = visitor.visitVariableExpr(this)
 }
